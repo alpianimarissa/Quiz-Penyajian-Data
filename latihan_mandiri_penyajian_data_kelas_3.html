@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembar Kerja Interaktif: Penyajian Data Kelas 3 SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Fredoka (Playful font for kids) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f9ff;
+        }
+        .font-kids {
+            font-family: 'Fredoka', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0f2fe;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bae6fd;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7dd3fc;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 pb-16">
+
+    <!-- Header Banner -->
+    <header class="bg-gradient-to-r from-sky-400 to-indigo-500 text-white py-8 px-6 text-center shadow-lg relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent)] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto space-y-3 relative z-10">
+            <span class="bg-amber-400 text-slate-900 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full font-kids shadow-sm">
+                🎯 Lembar Kerja Mandiri Siswa
+            </span>
+            <h1 class="font-kids text-3xl md:text-4xl tracking-wide drop-shadow-md">Ayo Menguji Kemampuanmu: Penyajian Data!</h1>
+            <p class="text-sm md:text-base text-sky-100 max-w-2xl mx-auto font-medium">
+                Selesaikan 15 soal seru di bawah ini dengan teliti. Jawab setiap soal untuk membuka kunci rahasia pembahasannya!
+            </p>
+        </div>
+    </header>
+
+    <!-- Floating Scoreboard / Tracker -->
+    <div class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b-4 border-sky-100 shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-100 text-indigo-700 w-10 h-10 rounded-2xl flex items-center justify-center font-bold font-kids text-lg">
+                    📊
+                </div>
+                <div>
+                    <h2 class="font-kids text-sm md:text-base text-slate-700">Kemajuan Latihanmu:</h2>
+                    <p class="text-xs text-slate-500 font-semibold" id="quiz-progress-text">Belum ada soal dijawab</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 w-full sm:w-auto">
+                <!-- Progress Bar -->
+                <div class="flex-grow sm:w-48 bg-slate-100 h-3.5 rounded-full overflow-hidden border border-slate-200">
+                    <div id="quiz-progress-bar" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full transition-all duration-300" style="width: 0%;"></div>
+                </div>
+                
+                <!-- Live Score Badge -->
+                <div class="bg-amber-100 border-2 border-amber-300 px-4 py-2 rounded-2xl flex items-center space-x-2 shrink-0">
+                    <span class="text-xs font-bold text-amber-800 font-kids uppercase">Skor:</span>
+                    <span id="score-val" class="font-kids font-extrabold text-lg text-amber-900">0</span>
+                    <span class="text-xs text-amber-700 font-bold">/ 150</span>
+                </div>
+
+                <button onclick="confirmResetQuiz()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-2 rounded-xl border border-slate-300 shadow-sm transition-all flex items-center space-x-1">
+                    <i class="fa-solid fa-rotate-left"></i> <span class="hidden md:inline">Ulangi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto p-4 md:p-6 w-full space-y-8 mt-4">
+
+        <!-- Custom Notification Box instead of alert() -->
+        <div id="custom-alert" class="hidden fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-4 rounded-2xl shadow-2xl border-2 border-slate-700 flex items-center space-x-3 transition-all duration-300 transform translate-y-10 opacity-0">
+            <span class="text-xl" id="alert-icon">⚠️</span>
+            <span class="text-xs font-semibold" id="alert-message">Notifikasi</span>
+        </div>
+
+        <!-- ==================== BAGIAN A: PILIHAN GANDA (1-5) ==================== -->
+        <div class="bg-sky-100 border-2 border-sky-200 px-4 py-2.5 rounded-2xl inline-block">
+            <span class="font-kids text-sm font-bold text-sky-800 uppercase tracking-wider"><i class="fa-solid fa-list-check mr-1.5"></i> Bagian A: Pilihan Ganda (Pilihlah salah satu jawaban yang paling tepat!)</span>
+        </div>
+
+        <!-- SOAL 1 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="1">
+            <div class="absolute top-0 left-0 w-3 h-full bg-sky-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-sky-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">1</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menghitung Jumlah Turus (Tally)</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Rani mencatat jenis buah favorit teman-temannya menggunakan turus (*tally marks*) berikut ini:
+                </p>
+                
+                <!-- Turus box (Angka petunjuk dihilangkan sesuai permintaan user) -->
+                <div class="bg-sky-50/50 p-4 rounded-2xl border border-sky-100 inline-block space-y-2 min-w-[220px]">
+                    <div class="flex justify-between items-center text-xs md:text-sm font-semibold border-b border-sky-100 pb-1.5">
+                        <span class="text-slate-500">Buah Kesukaan</span>
+                        <span class="text-indigo-600 font-mono tracking-widest">Turus (Tally)</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs md:text-sm font-semibold">
+                        <span class="text-slate-700">🍎 Apel</span>
+                        <span class="text-indigo-600 font-mono font-bold tracking-wider text-base"><s>IIII</s> III</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs md:text-sm font-semibold">
+                        <span class="text-slate-700">🍊 Jeruk</span>
+                        <span class="text-indigo-600 font-mono font-bold tracking-wider text-base">IIII</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs md:text-sm font-semibold">
+                        <span class="text-slate-700">🍌 Pisang</span>
+                        <span class="text-indigo-600 font-mono font-bold tracking-wider text-base"><s>IIII</s> <s>IIII</s> I</span>
+                    </div>
+                </div>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Berapakah jumlah siswa yang menyukai buah Pisang berdasarkan turus di atas?</p>
+                
+                <!-- Options Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    <button onclick="answerMC(1, 'A')" class="opt-btn-1 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>A. 8 siswa</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(1, 'B')" class="opt-btn-1 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>B. 10 siswa</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(1, 'C')" class="opt-btn-1 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>C. 11 siswa</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(1, 'D')" class="opt-btn-1 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>D. 12 siswa</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                </div>
+
+                <!-- Hidden Feedback Panel (Tampil Setelah Dijawab) -->
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(1)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Setiap satu kumpulan turus yang dicoret diagonal (<s>IIII</s>) bernilai 5. <br>
+                        Maka untuk buah Pisang, kita punya: <br>
+                        - Dua kumpulan lima: 5 + 5 = 10 <br>
+                        - Satu garis sisa: 1 <br>
+                        Total: 10 + 1 = <strong>11 siswa</strong>. (Jawaban: <strong>C</strong>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 2 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="2">
+            <div class="absolute top-0 left-0 w-3 h-full bg-sky-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-sky-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">2</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Membaca Grafik Gambar (Piktogram) Sederhana</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Perhatikan grafik gambar (piktogram) mainan milik Budi di bawah ini!
+                </p>
+
+                <!-- Pictogram visual representation -->
+                <div class="bg-sky-50/50 p-4 rounded-2xl border border-sky-100 max-w-md space-y-3">
+                    <div class="flex items-center justify-between text-xs md:text-sm border-b border-sky-100 pb-2">
+                        <span class="font-bold text-slate-700">Jenis Mainan</span>
+                        <span class="font-bold text-indigo-600">Representasi Bintang (⭐)</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs md:text-sm">
+                        <span class="font-medium text-slate-700">🚗 Mobil-mobilan</span>
+                        <span class="text-xl tracking-widest text-amber-500">⭐ ⭐ ⭐ ⭐ ⭐</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs md:text-sm">
+                        <span class="font-medium text-slate-700">🤖 Robot-robotan</span>
+                        <span class="text-xl tracking-widest text-emerald-500">⭐ ⭐ ⭐</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs md:text-sm">
+                        <span class="font-medium text-slate-700">🪀 Yoyo</span>
+                        <span class="text-xl tracking-widest text-pink-500">⭐ ⭐ ⭐ ⭐</span>
+                    </div>
+                    <div class="border-t border-sky-100 pt-2 text-center">
+                        <span class="inline-block bg-white text-indigo-800 font-kids text-[11px] px-3 py-1 rounded-full border border-sky-200">
+                            🔑 Keterangan: 1 gambar bintang (⭐) mewakili 1 buah mainan asli
+                        </span>
+                    </div>
+                </div>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Jenis mainan apakah yang jumlahnya paling sedikit dimiliki oleh Budi?</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    <button onclick="answerMC(2, 'A')" class="opt-btn-2 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>A. Mobil-mobilan</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(2, 'B')" class="opt-btn-2 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>B. Robot-robotan</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(2, 'C')" class="opt-btn-2 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>C. Yoyo</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(2, 'D')" class="opt-btn-2 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>D. Semua jenis mainan sama banyak</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(2)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        - Mobil-mobilan memiliki 5 bintang (⭐)<br>
+                        - Robot-robotan memiliki 3 bintang (⭐)<br>
+                        - Yoyo memiliki 4 bintang (⭐)<br>
+                        Jumlah terkecil (paling sedikit) adalah 3 bintang, yaitu milik kategori <strong>Robot-robotan</strong>. (Jawaban: <strong>B</strong>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 3 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="3">
+            <div class="absolute top-0 left-0 w-3 h-full bg-sky-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-sky-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">3</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menghitung Skala Piktogram Berskala</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Kantin sekolah mencatat penjualan Jus Mangga sebanyak <strong>12 gelas</strong> kemarin. <br>
+                    Jika pihak kantin ingin menyajikan data tersebut ke dalam piktogram berskala dengan aturan kunci: <br>
+                    <span class="inline-block bg-slate-100 border border-slate-200 px-3 py-1 rounded-lg text-xs font-semibold text-indigo-700 mt-1 font-mono">
+                        🔑 1 Gambar Gelas (🥛) Mewakili 3 Gelas Jus Asli
+                    </span>
+                </p>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Berapa banyak simbol gambar gelas (🥛) yang harus digambar pada tabel piktogram untuk Jus Mangga?</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    <button onclick="answerMC(3, 'A')" class="opt-btn-3 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>A. 3 gambar</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(3, 'B')" class="opt-btn-3 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>B. 4 gambar</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(3, 'C')" class="opt-btn-3 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>C. 6 gambar</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(3, 'D')" class="opt-btn-3 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>D. 12 gambar</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(3)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Gunakan rumus penentuan gambar berskala:<br>
+                        $$\text{Jumlah Gambar} = \frac{\text{Jumlah Benda Sebenarnya}}{\text{Nilai Skala}}$$
+                        $$\text{Jumlah Gambar} = \frac{12}{3} = \mathbf{4\ \text{Gambar Gelas}}$$
+                        Jadi, kita perlu menggambarkan 4 buah gambar gelas (🥛 🥛 🥛 🥛). (Jawaban: <strong>B</strong>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 4 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="4">
+            <div class="absolute top-0 left-0 w-3 h-full bg-sky-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-sky-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">4</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menafsirkan Ketinggian Diagram Balok (Block Graph)</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Berikut adalah catatan tinggi menara balok mainan yang dibuat secara kreatif oleh 4 siswa:
+                </p>
+
+                <!-- Data list representation -->
+                <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 inline-block space-y-2 min-w-[200px]">
+                    <ul class="text-xs md:text-sm font-medium text-slate-700 space-y-1">
+                        <li>👦 Roni: <span class="text-indigo-600 font-bold">6 balok</span></li>
+                        <li>👧 Sita: <span class="text-indigo-600 font-bold">8 balok</span></li>
+                        <li>👦 Andi: <span class="text-indigo-600 font-bold">5 balok</span></li>
+                        <li>👧 Tia: <span class="text-indigo-600 font-bold">7 balok</span></li>
+                    </ul>
+                </div>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Jika data tersebut diubah ke dalam bentuk diagram menara balok, siapakah yang akan memiliki menara paling tinggi?</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    <button onclick="answerMC(4, 'A')" class="opt-btn-4 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>A. Roni</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(4, 'B')" class="opt-btn-4 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>B. Sita</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(4, 'C')" class="opt-btn-4 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>C. Andi</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(4, 'D')" class="opt-btn-4 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>D. Tia</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(4)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Tinggi menara berbanding lurus dengan jumlah baloknya. <br>
+                        Membandingkan nilai balok: Sita (8) > Tia (7) > Roni (6) > Andi (5). <br>
+                        Nilai tertinggi adalah <strong>8 balok</strong> milik <strong>Sita</strong>, sehingga menara Sita adalah yang paling tinggi. (Jawaban: <strong>B</strong>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 5 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="5">
+            <div class="absolute top-0 left-0 w-3 h-full bg-sky-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-sky-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">5</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menghitung Perbandingan Selisih Data</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Masih menggunakan data menara balok di <strong>Soal Nomor 4</strong>:
+                </p>
+                <div class="bg-indigo-50/50 p-3 rounded-xl border border-indigo-100 inline-flex space-x-6 text-xs font-semibold text-slate-700">
+                    <span>Sita = 8 balok</span>
+                    <span>Andi = 5 balok</span>
+                </div>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Berapakah <strong>selisih</strong> jumlah balok antara menara milik Sita dan menara milik Andi?</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    <button onclick="answerMC(5, 'A')" class="opt-btn-5 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>A. 2 balok</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(5, 'B')" class="opt-btn-5 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>B. 3 balok</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(5, 'C')" class="opt-btn-5 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>C. 4 balok</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(5, 'D')" class="opt-btn-5 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>D. 13 balok</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(5)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Pertanyaan perbandingan yang menanyakan "selisih" diselesaikan dengan operasi hitung pengurangan.<br>
+                        $$\text{Selisih} = \text{Nilai Terbesar} - \text{Nilai Terkecil}$$
+                        $$\text{Selisih} = 8\ (\text{Sita}) - 5\ (\text{Andi}) = \mathbf{3\ \text{balok}}$$
+                        Jadi, selisih tinggi menaranya adalah 3 balok. (Jawaban: <strong>B</strong>)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ==================== BAGIAN B: ISIAN SINGKAT (6-8) ==================== -->
+        <div class="bg-amber-100 border-2 border-amber-200 px-4 py-2.5 rounded-2xl inline-block mt-8">
+            <span class="font-kids text-sm font-bold text-amber-800 uppercase tracking-wider"><i class="fa-solid fa-pen-to-square mr-1.5"></i> Bagian B: Isian Singkat (Ketiklah angka atau kata jawabanmu dengan teliti!)</span>
+        </div>
+
+        <!-- SOAL 6 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="6">
+            <div class="absolute top-0 left-0 w-3 h-full bg-amber-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-amber-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">6</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menghitung Nilai Benda dari Gambar Piktogram</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Di sebuah toko alat tulis, piktogram penjualan pensil menunjukkan gambar ini pada hari Senin:
+                </p>
+                <div class="bg-amber-50 text-xl tracking-widest p-3 rounded-xl border border-amber-200 inline-block">
+                    🔵 🔵 🔵 🔵
+                </div>
+                <p class="text-xs md:text-sm text-slate-600">
+                    Jika di bawah grafik tertulis kunci: <strong>1 Gambar Lingkaran Biru (🔵) Mewakili 5 Buah Pensil Sebenarnya</strong>.
+                </p>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Berapakah jumlah sebenarnya pensil yang berhasil terjual pada hari Senin?</p>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <input type="number" id="input-q6" placeholder="Ketik angka..." class="w-40 py-2.5 px-4 border-2 border-slate-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-300 rounded-xl text-xs md:text-sm font-medium focus:outline-none transition-all">
+                    <button onclick="checkInputQ(6, 20)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold font-kids text-xs md:text-sm py-2.5 px-5 rounded-xl shadow transition-all">Kirim Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(6)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        - Ada 4 gambar lingkaran (🔵 🔵 🔵 🔵).<br>
+                        - Setiap 1 lingkaran mewakili 5 pensil.<br>
+                        $$\text{Jumlah Pensil} = \text{Jumlah Gambar} \times \text{Nilai Kunci}$$
+                        $$\text{Jumlah Pensil} = 4 \times 5 = \mathbf{20\ \text{buah pensil}}$$
+                        Jadi, jumlah pensil sebenarnya yang terjual adalah <strong>20</strong>.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 7 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="7">
+            <div class="absolute top-0 left-0 w-3 h-full bg-amber-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-amber-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">7</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menghitung Jumlah Gabungan (Total)</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Andi mendata jumlah hewan peliharaan milik teman-teman sekelasnya:
+                </p>
+                <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100 inline-block text-xs md:text-sm font-medium text-slate-700 space-y-1">
+                    <p>🐱 Kucing = 7 orang</p>
+                    <p>🐰 Kelinci = 4 orang</p>
+                    <p>🐦 Burung = 3 orang</p>
+                </div>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Berapakah jumlah total teman Andi yang berpartisipasi dalam pendataan hewan ini?</p>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <input type="number" id="input-q7" placeholder="Ketik angka..." class="w-40 py-2.5 px-4 border-2 border-slate-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-300 rounded-xl text-xs md:text-sm font-medium focus:outline-none transition-all">
+                    <button onclick="checkInputQ(7, 14)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold font-kids text-xs md:text-sm py-2.5 px-5 rounded-xl shadow transition-all">Kirim Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(7)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Untuk mencari jumlah total (gabungan), kita menjumlahkan seluruh data kategori:<br>
+                        $$\text{Total} = \text{Kucing} + \text{Kelinci} + \text{Burung}$$
+                        $$\text{Total} = 7 + 4 + 3 = \mathbf{14\ \text{orang}}$$
+                        Jadi, total teman Andi yang didata ada sebanyak <strong>14</strong> orang.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 8 -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="8">
+            <div class="absolute top-0 left-0 w-3 h-full bg-amber-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-amber-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">8</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Mengetahui Komponen Grafik Balok</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Saat membuat diagram balok, seluruh menara balok harus diletakkan sejajar mulai dari garis mendatar di paling bawah. 
+                    Garis lurus ini sangat penting agar tidak ada menara balok yang melayang tinggi atau tenggelam sendiri.
+                </p>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Apakah nama istilah bahasa Inggris atau bahasa Indonesia untuk "Garis dasar tempat berdirinya semua menara balok" tersebut?</p>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <input type="text" id="input-q8" placeholder="Ketik jawaban kata..." class="w-56 py-2.5 px-4 border-2 border-slate-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-300 rounded-xl text-xs md:text-sm font-medium focus:outline-none transition-all">
+                    <button onclick="checkInputTextQ(8, ['baseline', 'garis dasar', 'garis bawah'])" class="bg-amber-500 hover:bg-amber-600 text-white font-bold font-kids text-xs md:text-sm py-2.5 px-5 rounded-xl shadow transition-all">Kirim Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(8)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Titik awal atau garis lurus mendatar di bawah tempat meletakkan menara balok diagram secara rata dinamakan **Baseline** (Bahasa Inggris) atau **Garis Dasar** / **Garis Bawah** (Bahasa Indonesia). (Siswa boleh menjawab salah satunya).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ==================== BAGIAN C: URAIAN INTERAKTIF (9-10) ==================== -->
+        <div class="bg-emerald-100 border-2 border-emerald-200 px-4 py-2.5 rounded-2xl inline-block mt-8">
+            <span class="font-kids text-sm font-bold text-emerald-800 uppercase tracking-wider"><i class="fa-solid fa-file-signature mr-1.5"></i> Bagian C: Uraian & Studi Kasus (Tuliskan analisis & cara berpikirmu!)</span>
+        </div>
+
+        <!-- SOAL 9 (MODIFIED: Ada Kolom Input) -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="9">
+            <div class="absolute top-0 left-0 w-3 h-full bg-emerald-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-emerald-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">9</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Uraian Kasus: Mendesain Piktogram Kue Donat</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Ibu membeli donat lezat dengan rasa yang berbeda untuk pesta ulang tahun adik:<br>
+                    🍩 Rasa Cokelat = 20 buah | Rasa Keju = 15 buah | Rasa Stroberi = 10 buah <br><br>
+                    Kalian diminta membantu Ibu mendesain diagram piktogram. <br>
+                    Disepakati aturan: <strong>1 Gambar Donat (⭕) Mewakili 5 Buah Donat Sebenarnya</strong>.
+                </p>
+
+                <!-- Siswa menjawab pertanyaan interaktif -->
+                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 space-y-4">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-emerald-950">a) Berapa banyak gambar lingkaran donat (⭕) yang digambar khusus untuk rasa Keju?</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="input-q9-a" placeholder="..." class="w-24 py-1.5 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs font-medium focus:outline-none">
+                            <span class="text-xs text-slate-500 font-semibold">gambar ⭕</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-emerald-950">b) Tuliskan hasil coret-coretan caramu mencari jawaban di atas:</label>
+                        <textarea id="input-q9-b" rows="2" placeholder="Tuliskan caramu di sini..." class="w-full py-2 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs focus:outline-none"></textarea>
+                    </div>
+                    
+                    <button onclick="checkEssayQ(9, {a: 3})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold font-kids text-xs py-2 px-4 rounded-xl shadow transition-all">Kirim & Periksa Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(9)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan & Kunci Jawaban Lengkap:</strong><br>
+                        a) <strong>Jawaban: 3 gambar ⭕</strong>.<br>
+                        Caranya: Jumlah donat Keju adalah 15 buah. Skala kuncinya adalah 5. <br>
+                        $$\text{Gambar Rasa Keju} = \frac{15}{5} = \mathbf{3\ \text{gambar}}$$
+                        <br>
+                        *Berikut adalah data lengkap piktogram untuk seluruh rasa:*<br>
+                        - **Rasa Cokelat:** $20 \div 5 = 4$ gambar donat (⭕ ⭕ ⭕ ⭕)<br>
+                        - **Rasa Keju:** $15 \div 5 = 3$ gambar donat (⭕ ⭕ ⭕)<br>
+                        - **Rasa Stroberi:** $10 \div 5 = 2$ gambar donat (⭕ ⭕)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 10 (MODIFIED: Ada Kolom Input) -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="10">
+            <div class="absolute top-0 left-0 w-3 h-full bg-emerald-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-emerald-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">10</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Uraian Kasus: Menganalisis Kunjungan Perpustakaan</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Perhatikan data jumlah kunjungan siswa ke perpustakaan sekolah selama 4 hari pertama minggu ini:
+                </p>
+                <div class="bg-emerald-50/30 p-4 rounded-xl border border-emerald-100 inline-block text-xs md:text-sm font-medium text-slate-700 space-y-1">
+                    <p>📅 Senin: 12 siswa</p>
+                    <p>📅 Selasa: 15 siswa</p>
+                    <p>📅 Rabu: 8 siswa</p>
+                    <p>📅 Kamis: 10 siswa</p>
+                </div>
+
+                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 space-y-4">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-emerald-950">a) Pada hari apakah perpustakaan paling sepi pengunjung? (Ketik harinya)</label>
+                        <input type="text" id="input-q10-a" placeholder="Hari..." class="w-40 py-1.5 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs font-medium focus:outline-none">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-emerald-950">b) Berapa orangkah lebihnya pengunjung pada hari Selasa jika dibandingkan hari Kamis?</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="input-q10-b" placeholder="..." class="w-24 py-1.5 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs font-medium focus:outline-none">
+                            <span class="text-xs text-slate-500 font-semibold">siswa</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="checkEssayQ(10, {a: 'rabu', b: 5})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold font-kids text-xs py-2 px-4 rounded-xl shadow transition-all">Kirim & Periksa Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(10)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan & Kunci Jawaban Lengkap:</strong><br>
+                        - a) **Rabu** (8 siswa) adalah angka kunjungan terkecil, sehingga hari Rabu adalah yang **paling sepi**.<br>
+                        - b) Menghitung kelebihan pengunjung menggunakan pengurangan: <br>
+                        $$\text{Selisih Selasa dan Kamis} = \text{Selasa (15)} - \text{Kamis (10)} = \mathbf{5\ \text{siswa}}$$
+                        Jadi, kelebihan pengunjung pada hari Selasa adalah **5 orang**.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ==================== BAGIAN D: 5 SOAL TAMBAHAN (11-15) ==================== -->
+        <div class="bg-indigo-100 border-2 border-indigo-200 px-4 py-2.5 rounded-2xl inline-block mt-8 font-kids">
+            <span class="text-sm font-bold text-indigo-800 uppercase tracking-wider"><i class="fa-solid fa-plus mr-1.5"></i> Bagian D: 5 Soal Tambahan Berbeda (Nomor 11-15)</span>
+        </div>
+
+        <!-- SOAL 11 (NEW: Pilihan Ganda Turus) -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="11">
+            <div class="absolute top-0 left-0 w-3 h-full bg-indigo-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-indigo-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">11</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menentukan Angka dari Pola Turus</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Slamet mencatat banyaknya sepeda yang melintas di depan pos hansip dalam waktu 1 jam. Turus yang ia peroleh adalah:
+                </p>
+                <div class="bg-indigo-50 text-xl font-mono tracking-widest font-bold text-indigo-700 p-3 rounded-xl border border-indigo-100 inline-block">
+                    <s>IIII</s> <s>IIII</s> <s>IIII</s> II
+                </div>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Berapakah nilai angka total dari turus tersebut?</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    <button onclick="answerMC(11, 'A')" class="opt-btn-11 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>A. 12 sepeda</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(11, 'B')" class="opt-btn-11 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>B. 15 sepeda</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(11, 'C')" class="opt-btn-11 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>C. 17 sepeda</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(11, 'D')" class="opt-btn-11 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>D. 18 sepeda</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(11)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        - Ada tiga ikat turus diagonal bernilai 5 $\rightarrow$ 5 + 5 + 5 = 15.<br>
+                        - Di sampingnya ada sisa 2 garis tegak $\rightarrow$ 2.<br>
+                        - Total keseluruhan: 15 + 2 = **17**. (Jawaban: **C**)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 12 (NEW: Pilihan Ganda Interpretasi Data Sederhana) -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="12">
+            <div class="absolute top-0 left-0 w-3 h-full bg-indigo-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-indigo-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">12</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menentukan Kategori Terbanyak</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Siswa kelas 3 memberikan suara untuk menentukan warna seragam olahraga cadangan:<br>
+                    ❤️ Merah = 6 suara | 💙 Biru = 9 suara | 💛 Kuning = 4 suara
+                </p>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Manakah warna yang mendapatkan dukungan terbanyak (paling disukai) dari siswa?</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+                    <button onclick="answerMC(12, 'A')" class="opt-btn-12 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>A. Merah</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(12, 'B')" class="opt-btn-12 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>B. Biru</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(12, 'C')" class="opt-btn-12 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>C. Kuning</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                    <button onclick="answerMC(12, 'D')" class="opt-btn-12 py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between">
+                        <span>D. Semuanya sama banyak disukai</span>
+                        <span class="opt-indicator hidden"></span>
+                    </button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(12)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Mari kita bandingkan jumlahnya:<br>
+                        - Biru (9) > Merah (6) > Kuning (4).<br>
+                        Angka paling besar/terbanyak adalah 9 suara, yaitu warna **Biru**. (Jawaban: **B**)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 13 (NEW: Isian Singkat Kunci Balik Piktogram) -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="13">
+            <div class="absolute top-0 left-0 w-3 h-full bg-amber-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-amber-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">13</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menemukan Nilai Kunci Skala yang Hilang</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Di sebuah perkebunan kelapa sawit, tercatat total ada <strong>30 pohon mangga</strong> yang tumbuh di pinggir jalan. <br>
+                    Dalam laporan piktogram, pengurus hanya menggambar <strong>6 buah gambar pohon (🌲)</strong> secara sejajar untuk mewakili 30 pohon mangga tersebut.
+                </p>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Artinya, 1 buah gambar pohon (🌲) mewakili berapa pohon mangga sebenarnya?</p>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <input type="number" id="input-q13" placeholder="Ketik angka..." class="w-40 py-2.5 px-4 border-2 border-slate-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-300 rounded-xl text-xs md:text-sm font-medium focus:outline-none transition-all">
+                    <button onclick="checkInputQ(13, 5)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold font-kids text-xs md:text-sm py-2.5 px-5 rounded-xl shadow transition-all">Kirim Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(13)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Gunakan operasi hitung pembagian untuk mencari skala dari total benda asli dan total gambar:<br>
+                        $$\text{Nilai 1 Gambar} = \frac{\text{Total Benda Asli}}{\text{Jumlah Gambar}}$$
+                        $$\text{Nilai 1 Gambar} = \frac{30}{6} = \mathbf{5\ \text{pohon}}$$
+                        Jadi, 1 gambar pohon 🌲 mewakili **5** pohon asli.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 14 (NEW: Isian Singkat Menggabungkan Sebagian Data) -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="14">
+            <div class="absolute top-0 left-0 w-3 h-full bg-amber-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-amber-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">14</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Menjumlahkan Dua Kategori Tertentu</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Dari diagram balok mengenai hobi favorit siswa kelas 3, didapatkan data sebagai berikut:
+                </p>
+                <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100 inline-block text-xs md:text-sm font-medium text-slate-700 space-y-1">
+                    <p>🎨 Melukis = 5 siswa</p>
+                    <p>💃 Menari = 3 siswa</p>
+                    <p>📖 Membaca = 8 siswa</p>
+                </div>
+
+                <p class="text-xs md:text-sm font-semibold text-slate-700">Berapakah jumlah total siswa yang menyukai hobi Melukis dan Menari jika digabungkan?</p>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <input type="number" id="input-q14" placeholder="Ketik angka..." class="w-40 py-2.5 px-4 border-2 border-slate-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-300 rounded-xl text-xs md:text-sm font-medium focus:outline-none transition-all">
+                    <button onclick="checkInputQ(14, 8)" class="bg-amber-500 hover:bg-amber-600 text-white font-bold font-kids text-xs md:text-sm py-2.5 px-5 rounded-xl shadow transition-all">Kirim Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(14)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan:</strong><br>
+                        Pertanyaan menanyakan jumlah hobi Melukis dan Menari bila digabungkan, maka abaikan membaca dan jumlahkan kedua data tersebut:<br>
+                        $$\text{Jumlah Gabungan} = \text{Melukis} + \text{Menari}$$
+                        $$\text{Jumlah Gabungan} = 5 + 3 = \mathbf{8\ \text{siswa}}$$
+                        Jadi, total gabungan siswa yang melukis dan menari adalah **8** siswa.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOAL 15 (NEW: Uraian Interaktif Mobil Mainan) -->
+        <div class="bg-white p-5 md:p-6 rounded-3xl shadow-md border-2 border-slate-100 quiz-card relative overflow-hidden" data-qindex="15">
+            <div class="absolute top-0 left-0 w-3 h-full bg-emerald-400"></div>
+            <div class="pl-2 space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="bg-emerald-500 text-white font-kids font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs shadow">15</span>
+                    <h3 class="font-semibold text-sm md:text-base text-slate-800">Uraian Kasus: Skala Mobil Mainan</h3>
+                </div>
+                
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+                    Yusuf memiliki koleksi mobil mainan plastik:<br>
+                    🚗 Mobil Merah = 16 buah | 🚙 Mobil Biru = 8 buah <br><br>
+                    Yusuf ingin membuat piktogram dengan skala kunci: <strong>1 Gambar Kunci (🔑) Mewakili 4 Mobil Mainan</strong>.
+                </p>
+
+                <div class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 space-y-4">
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-emerald-950">a) Berapa gambar kunci (🔑) yang harus digambar untuk Mobil Merah?</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="input-q15-a" placeholder="..." class="w-24 py-1.5 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs font-medium focus:outline-none">
+                            <span class="text-xs text-slate-500 font-semibold">gambar 🔑</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-emerald-950">b) Berapa gambar kunci (🔑) yang harus digambar untuk Mobil Biru?</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="number" id="input-q15-b" placeholder="..." class="w-24 py-1.5 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs font-medium focus:outline-none">
+                            <span class="text-xs text-slate-500 font-semibold">gambar 🔑</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="checkEssayQ(15, {a: 4, b: 2})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold font-kids text-xs py-2 px-4 rounded-xl shadow transition-all">Kirim & Periksa Jawaban</button>
+                </div>
+
+                <div class="hidden pt-4 border-t border-slate-100 flex flex-col space-y-3 feedback-panel">
+                    <div class="flex items-center space-x-2 font-kids text-sm font-bold feedback-title"></div>
+                    <button onclick="toggleSolution(15)" class="text-xs text-sky-600 hover:text-sky-700 font-bold text-left underline flex items-center space-x-1">
+                        <span>Lihat Pembahasan Lengkap</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                    </button>
+                    <div class="hidden text-xs md:text-sm bg-sky-50 text-sky-900 p-4 rounded-2xl border border-sky-100 leading-relaxed solution-panel">
+                        <strong>Pembahasan & Kunci Jawaban Lengkap:</strong><br>
+                        - **a) Mobil Merah:** $16 \div 4 = \mathbf{4}$ gambar kunci (🔑 🔑 🔑 🔑)<br>
+                        - **b) Mobil Biru:** $8 \div 4 = \mathbf{2}$ gambar kunci (🔑 🔑)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Custom JS Script -->
+    <script>
+        // Track which questions are answered
+        let answeredQuestions = {};
+        
+        // Define correct answers for MC and Short Answers
+        const mcAnswers = {
+            1: 'C',
+            2: 'B',
+            3: 'B',
+            4: 'B',
+            5: 'B',
+            11: 'C',
+            12: 'B'
+        };
+
+        // Initialize App on load
+        window.onload = function() {
+            recalcProgress();
+        };
+
+        // Custom Notification Handler instead of alert()
+        function showNotification(msg, isSuccess = false) {
+            const alertBox = document.getElementById('custom-alert');
+            const alertIcon = document.getElementById('alert-icon');
+            const alertMsg = document.getElementById('alert-message');
+
+            alertMsg.textContent = msg;
+            alertIcon.textContent = isSuccess ? '✨' : '⚠️';
+
+            if (isSuccess) {
+                alertBox.classList.remove('bg-slate-900', 'border-slate-700');
+                alertBox.classList.add('bg-emerald-600', 'border-emerald-500');
+            } else {
+                alertBox.classList.add('bg-slate-900', 'border-slate-700');
+                alertBox.classList.remove('bg-emerald-600', 'border-emerald-500');
+            }
+
+            // Animate In
+            alertBox.classList.remove('hidden', 'translate-y-10', 'opacity-0');
+            alertBox.classList.add('translate-y-0', 'opacity-100');
+
+            // Hide after 3 seconds
+            setTimeout(() => {
+                alertBox.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+
+        // --- Q1, 2, 3, 4, 5, 11, 12: Multiple Choice Logic ---
+        function answerMC(qIndex, answer) {
+            if (answeredQuestions[qIndex]) return; // Block double answering
+
+            const card = document.querySelector(`.quiz-card[data-qindex="${qIndex}"]`);
+            const optButtons = card.querySelectorAll(`.opt-btn-${qIndex}`);
+            const feedbackPanel = card.querySelector('.feedback-panel');
+            const feedbackTitle = card.querySelector('.feedback-title');
+
+            const correctAns = mcAnswers[qIndex];
+            
+            // Loop buttons and visually apply correct/incorrect colors
+            optButtons.forEach(btn => {
+                const text = btn.textContent.trim();
+                const indicator = btn.querySelector('.opt-indicator');
+                
+                if (text.startsWith(correctAns)) {
+                    btn.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-800');
+                    indicator.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i>';
+                    indicator.classList.remove('hidden');
+                } else if (text.startsWith(answer) && answer !== correctAns) {
+                    btn.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-800');
+                    indicator.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-500"></i>';
+                    indicator.classList.remove('hidden');
+                }
+                btn.disabled = true;
+                btn.classList.remove('hover:bg-sky-50', 'hover:border-sky-300');
+            });
+
+            // Set Feedback Title
+            if (answer === correctAns) {
+                feedbackTitle.innerHTML = '<span class="text-emerald-600">🎉 Hebat! Jawabanmu Benar!</span>';
+                answeredQuestions[qIndex] = { isCorrect: true, score: 10 };
+                showNotification("Benar! Kamu dapat 10 poin!", true);
+            } else {
+                feedbackTitle.innerHTML = `<span class="text-rose-600 font-bold">❌ Jawabanmu Kurang Tepat</span>`;
+                answeredQuestions[qIndex] = { isCorrect: false, score: 0 };
+                showNotification("Yah, jawaban kurang tepat. Tetap semangat!", false);
+            }
+
+            feedbackPanel.classList.remove('hidden');
+            recalcProgress();
+        }
+
+        // --- Q6, 7, 13, 14: Short Numeric Input Logic ---
+        function checkInputQ(qIndex, correctVal) {
+            if (answeredQuestions[qIndex]) return;
+
+            const card = document.querySelector(`.quiz-card[data-qindex="${qIndex}"]`);
+            const inputEl = document.getElementById(`input-q${qIndex}`);
+            const inputVal = parseInt(inputEl.value);
+            const feedbackPanel = card.querySelector('.feedback-panel');
+            const feedbackTitle = card.querySelector('.feedback-title');
+
+            if (isNaN(inputVal)) {
+                showNotification("Silakan tulis jawaban berupa angka terlebih dahulu!");
+                return;
+            }
+
+            inputEl.disabled = true;
+
+            if (inputVal === correctVal) {
+                feedbackTitle.innerHTML = '<span class="text-emerald-600">🎉 Luar Biasa! Jawabanmu Tepat Sekali!</span>';
+                inputEl.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-800');
+                answeredQuestions[qIndex] = { isCorrect: true, score: 10 };
+                showNotification("Jawaban Tepat! +10 Poin!", true);
+            } else {
+                feedbackTitle.innerHTML = `<span class="text-rose-600 font-bold">❌ Jawabanmu (${inputVal}) Kurang Tepat</span>`;
+                inputEl.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-800');
+                answeredQuestions[qIndex] = { isCorrect: false, score: 0 };
+                showNotification("Jawabannya kurang pas. Lihat pembahasannya yuk!", false);
+            }
+
+            feedbackPanel.classList.remove('hidden');
+            recalcProgress();
+        }
+
+        // --- Q8: Short Text Input Logic ---
+        function checkInputTextQ(qIndex, acceptedWords) {
+            if (answeredQuestions[qIndex]) return;
+
+            const card = document.querySelector(`.quiz-card[data-qindex="${qIndex}"]`);
+            const inputEl = document.getElementById(`input-q${qIndex}`);
+            const textVal = inputEl.value.trim().toLowerCase();
+            const feedbackPanel = card.querySelector('.feedback-panel');
+            const feedbackTitle = card.querySelector('.feedback-title');
+
+            if (textVal === "") {
+                showNotification("Tuliskan jawaban kata terlebih dahulu!");
+                return;
+            }
+
+            inputEl.disabled = true;
+
+            // Check if user answer includes any of the accepted key terms
+            let isFound = false;
+            acceptedWords.forEach(word => {
+                if (textVal.includes(word)) {
+                    isFound = true;
+                }
+            });
+
+            if (isFound) {
+                feedbackTitle.innerHTML = '<span class="text-emerald-600">🎉 Pintar! Istilah kata yang kamu tulis tepat!</span>';
+                inputEl.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-800');
+                answeredQuestions[qIndex] = { isCorrect: true, score: 10 };
+                showNotification("Luar Biasa! Jawabanmu Benar! +10 Poin!", true);
+            } else {
+                feedbackTitle.innerHTML = `<span class="text-rose-600 font-bold">❌ Jawabanmu Kurang Tepat</span>`;
+                inputEl.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-800');
+                answeredQuestions[qIndex] = { isCorrect: false, score: 0 };
+                showNotification("Istilah kurang tepat. Periksa pembahasan!", false);
+            }
+
+            feedbackPanel.classList.remove('hidden');
+            recalcProgress();
+        }
+
+        // --- Q9, 10, 15: Essay Multi-Input Logic ---
+        function checkEssayQ(qIndex, answers) {
+            if (answeredQuestions[qIndex]) return;
+
+            const card = document.querySelector(`.quiz-card[data-qindex="${qIndex}"]`);
+            const feedbackPanel = card.querySelector('.feedback-panel');
+            const feedbackTitle = card.querySelector('.feedback-title');
+
+            // Collect inputs dynamically based on provided keys
+            let allCorrect = true;
+            let missingInput = false;
+
+            for (let key in answers) {
+                const inputEl = document.getElementById(`input-q${qIndex}-${key}`);
+                if (!inputEl) continue;
+
+                const userVal = inputEl.value.trim().toLowerCase();
+                if (userVal === "") {
+                    missingInput = true;
+                    break;
+                }
+
+                const targetVal = answers[key].toString().toLowerCase();
+
+                // Lock inputs
+                inputEl.disabled = true;
+
+                if (userVal !== targetVal) {
+                    allCorrect = false;
+                    inputEl.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-700');
+                } else {
+                    inputEl.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-700');
+                }
+            }
+
+            if (missingInput) {
+                showNotification("Harap isi semua kolom pertanyaan terlebih dahulu!");
+                // Reset disabled status so they can fill it
+                for (let key in answers) {
+                    const inputEl = document.getElementById(`input-q${qIndex}-${key}`);
+                    if (inputEl) inputEl.disabled = false;
+                }
+                return;
+            }
+
+            // Optional: check secondary text area if exists (does not block grading, just disabled)
+            const noteEl = document.getElementById(`input-q${qIndex}-b`);
+            if (noteEl) noteEl.disabled = true;
+
+            if (allCorrect) {
+                feedbackTitle.innerHTML = '<span class="text-emerald-600">🎉 Sempurna! Seluruh sub-jawabanmu benar!</span>';
+                answeredQuestions[qIndex] = { isCorrect: true, score: 10 };
+                showNotification("Kerja Bagus! Seluruh isian benar! +10 Poin!", true);
+            } else {
+                feedbackTitle.innerHTML = '<span class="text-amber-600 font-bold">⚠️ Sebagian Isian Masih Kurang Tepat</span>';
+                answeredQuestions[qIndex] = { isCorrect: false, score: 0 };
+                showNotification("Ada isian yang salah. Baca pembahasannya ya!", false);
+            }
+
+            feedbackPanel.classList.remove('hidden');
+            recalcProgress();
+        }
+
+        // --- Helper: Toggle Solution Panel ---
+        function toggleSolution(qIndex) {
+            const card = document.querySelector(`.quiz-card[data-qindex="${qIndex}"]`);
+            const solPanel = card.querySelector('.solution-panel');
+            solPanel.classList.toggle('hidden');
+        }
+
+        // --- Helper: Recalculate Score and Progress Banner ---
+        function recalcProgress() {
+            let totalQuestions = 15;
+            let answeredCount = 0;
+            let currentScore = 0;
+
+            for (let q in answeredQuestions) {
+                answeredCount++;
+                currentScore += answeredQuestions[q].score;
+            }
+
+            // Update UI
+            document.getElementById('score-val').textContent = currentScore;
+            
+            const progressPercent = (answeredCount / totalQuestions) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+
+            const textEl = document.getElementById('quiz-progress-text');
+            if (answeredCount === 0) {
+                textEl.textContent = "Belum ada soal dijawab";
+            } else if (answeredCount < totalQuestions) {
+                textEl.textContent = `Menjawab ${answeredCount} dari ${totalQuestions} soal`;
+            } else {
+                textEl.textContent = "✨ Semua soal berhasil diselesaikan! Luar biasa!";
+                showNotification(`Selamat! Kamu telah menyelesaikan kuis dengan total skor ${currentScore}!`, true);
+            }
+        }
+
+        // --- Helper: Reset Handler ---
+        function confirmResetQuiz() {
+            // Friendly custom message check
+            const userAgree = confirm("Apakah kamu yakin ingin mengulangi seluruh latihan dari awal? Semua skormu akan di-reset.");
+            if (userAgree) {
+                resetAll();
+            }
+        }
+
+        function resetAll() {
+            answeredQuestions = {};
+            
+            // Loop through cards and reset styles
+            const cards = document.querySelectorAll('.quiz-card');
+            cards.forEach(card => {
+                const qIndex = parseInt(card.getAttribute('data-qindex'));
+                
+                // Hide feedback
+                const feedbackPanel = card.querySelector('.feedback-panel');
+                if (feedbackPanel) feedbackPanel.classList.add('hidden');
+
+                const solutionPanel = card.querySelector('.solution-panel');
+                if (solutionPanel) solutionPanel.classList.add('hidden');
+
+                // Reset Multiple Choice buttons
+                const optButtons = card.querySelectorAll(`.opt-btn-${qIndex}`);
+                optButtons.forEach(btn => {
+                    btn.className = `opt-btn-${qIndex} py-3 px-4 border-2 border-slate-100 hover:border-sky-300 rounded-xl text-xs md:text-sm text-left font-medium transition-all hover:bg-sky-50 flex items-center justify-between`;
+                    btn.disabled = false;
+                    const indicator = btn.querySelector('.opt-indicator');
+                    if (indicator) indicator.classList.add('hidden');
+                });
+
+                // Reset standard inputs
+                const textInput = document.getElementById(`input-q${qIndex}`);
+                if (textInput) {
+                    textInput.value = "";
+                    textInput.disabled = false;
+                    textInput.className = "w-40 py-2.5 px-4 border-2 border-slate-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-300 rounded-xl text-xs md:text-sm font-medium focus:outline-none transition-all";
+                    if (qIndex === 8) {
+                        textInput.className = "w-56 py-2.5 px-4 border-2 border-slate-200 focus:border-amber-400 focus:ring-1 focus:ring-amber-300 rounded-xl text-xs md:text-sm font-medium focus:outline-none transition-all";
+                    }
+                }
+
+                // Reset sub inputs (For essay style)
+                const subInputs = card.querySelectorAll('input[id^="input-q' + qIndex + '-"]');
+                subInputs.forEach(subInp => {
+                    subInp.value = "";
+                    subInp.disabled = false;
+                    subInp.className = "w-24 py-1.5 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs font-medium focus:outline-none";
+                    if (subInp.id.endsWith('-a') && qIndex === 10) {
+                        subInp.className = "w-40 py-1.5 px-3 border-2 border-slate-200 focus:border-emerald-400 rounded-xl text-xs font-medium focus:outline-none";
+                    }
+                });
+
+                // Reset essay textareas
+                const textarea = card.querySelector('textarea');
+                if (textarea) {
+                    textarea.value = "";
+                    textarea.disabled = false;
+                }
+            });
+
+            recalcProgress();
+            showNotification("Semua soal telah dikosongkan. Selamat belajar kembali!", true);
+        }
+    </script>
+</body>
+</html>
